@@ -4,7 +4,6 @@ import { useParams, Outlet, useLocation } from "react-router-dom";
 import { useFilters } from "../../hooks/useFilters";
 
 import { QuestionsPage } from "../../pages/QuestionsPage/questionsPage";
-import { DetailQuestionPage } from "../../pages/DetailQuestionPage/detailQuestionPage";
 
 export function QuestionsContainer({ filterValues, filterActions }) {
   const params = useParams();

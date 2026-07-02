@@ -30,7 +30,7 @@ export type Collection = {
   id: number;
   title: string;
   description: string;
-  imageSrc: string | null;
+  imageSrc: string;
   createdAt: string;
   updatedAt: string;
   createdBy: CollectionAuthor;
@@ -38,6 +38,7 @@ export type Collection = {
   keywords: string[];
   company: CollectionCompany;
   questionsCount: number;
+  slug: string;
   tasksCount: number;
   specializations: CollectionSpecialization[];
 };

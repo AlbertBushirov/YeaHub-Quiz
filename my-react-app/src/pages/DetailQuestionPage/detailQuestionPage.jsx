@@ -1,11 +1,13 @@
-import "./detailQuestionPage.scss";
+import { useParams, useOutletContext, useNavigate } from "react-router-dom";
 
 import { QuestionNavigation } from "../../components/QuestionNavigation/QuestionNavigation";
 import { BackButton } from "../../components/BackButton/BackButton";
+import { AsideDetail } from "../../components/AsideDetail/AsideDetail";
+import { ListButtons } from "../../components/ListButtons/listButtons";
+
 import { useQuestionNavigation } from "../../hooks/useQuestionNavigation";
 
-import { useParams, useOutletContext, useNavigate } from "react-router-dom";
-import { ListButtons } from "../../components/listButtons/listButtons";
+import "./detailQuestionPage.scss";
 
 export function DetailQuestionPage() {
   const { title } = useParams();
@@ -40,7 +42,7 @@ export function DetailQuestionPage() {
 
   return (
     <main>
-      <BackButton onClick={close} style={{ cursor: "pointer" }} />
+      <BackButton onClick={close} />
       <div className="detail_question">
         <div className="detail_question__title_conteiner">
           <h1>{question.title}</h1>
@@ -69,24 +71,7 @@ export function DetailQuestionPage() {
           />
         </article>
       </div>
-      <aside className="filter">
-        <span>Уровень</span>
-        <ul className="description__params">
-          <span>Рейтинг: {question.rate}</span>
-          <span>Сложность: {question.complexity}</span>
-        </ul>
-
-        <ListButtons
-          name="Навыки:"
-          title="title"
-          buttons={question.questionSkills}
-        />
-        <ListButtons
-          name="Ключевые слова:"
-          title="none"
-          buttons={question.keywords}
-        />
-      </aside>
+      <AsideDetail data={question} />
     </main>
   );
 }

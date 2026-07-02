@@ -2,7 +2,15 @@ import type { FilterProps, FilterBlock } from "@/types/Filter.js";
 
 import { type ChangeEvent } from "react";
 
-import { ListButtons } from "../listButtons/listButtons.js";
+import { ListButtons } from "../ListButtons/listButtons.js";
+
+import {
+  levelsConfig,
+  ratingConfig,
+  statusConfig,
+  acces,
+} from "@/data/filterData.js";
+
 import "./filter.scss";
 
 export function Filter({
@@ -12,6 +20,8 @@ export function Filter({
   data,
   setTitle,
   exclude = [],
+  selectedAccess,
+  setSelectedAccess,
 }: FilterProps) {
   const {
     keywords,
@@ -28,26 +38,6 @@ export function Filter({
     setSelectedRating,
   } = actions;
   const { specializations, skills } = data;
-
-  // Внутренние статические конфигурации
-  const levelsConfig = [
-    { id: 1, title: "1-3" },
-    { id: 4, title: "4-6" },
-    { id: 7, title: "7-8" },
-    { id: 9, title: "9-10" },
-  ];
-  const ratingConfig = [
-    { title: 1 },
-    { title: 2 },
-    { title: 3 },
-    { title: 4 },
-    { title: 5 },
-  ];
-  const statusConfig = [
-    { title: "Изученные" },
-    { title: "Не изученные" },
-    { title: "Все" },
-  ];
 
   // Хелпер для проверки, нужно ли рендерить блок
   const shouldRender = (blockName: FilterBlock) => !exclude.includes(blockName);
@@ -111,6 +101,16 @@ export function Filter({
 
       {shouldRender("status") && (
         <ListButtons name="Статус" title="title" buttons={statusConfig} />
+      )}
+
+      {shouldRender("acces") && (
+        <ListButtons
+          name="Доступ"
+          buttons={acces}
+          title="title"
+          selected={selectedAccess}
+          setSelected={setSelectedAccess}
+        />
       )}
     </aside>
   );

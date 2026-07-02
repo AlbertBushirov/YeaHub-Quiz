@@ -1,5 +1,5 @@
 import { CatalogPagination } from "../../components/CatalogPagination/CatalogPagination";
-import { QuestionsList } from "../../components/questionsList/questionsList";
+import { QuestionsList } from "../../components/QuestionsList/questionsList";
 import { Filter } from "../../components/filter/filter";
 import { HeaderList } from "../../components/HeaderList/HeaderList";
 
@@ -35,7 +35,7 @@ export function QuestionsPage({
           actions={actions}
           data={{ specializations, skills }}
           setTitle={setTitle}
-          exclude={[]}
+          exclude={["rating", "acces"]}
         ></Filter>
       </main>
     </>

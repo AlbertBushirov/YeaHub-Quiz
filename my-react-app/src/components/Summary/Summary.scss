@@ -1,0 +1,7 @@
+@use "../../styles/variables" as *;
+
+.summary_container {
+  display: flex;
+  color: $bg-button-active;
+  gap: 10px;
+}

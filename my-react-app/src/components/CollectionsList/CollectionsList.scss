@@ -1,0 +1,24 @@
+@use "../../styles/variables" as *;
+
+.collection_container {
+  display: flex;
+  gap: 20px;
+  padding: 0px;
+  cursor: pointer;
+  &__image {
+    width: 150px;
+    height: 150px;
+    border-radius: $radius;
+    background-color: green;
+    img {
+      //width: 100%;
+      height: 100%;
+      border-radius: inherit;
+    }
+  }
+  &__info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

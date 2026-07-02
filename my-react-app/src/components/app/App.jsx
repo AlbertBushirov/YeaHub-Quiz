@@ -11,6 +11,7 @@ import { useFilterState } from "../../hooks/useFilterState";
 import { QuestionsPage } from "../../pages/questionsPage/questionsPage";
 import { DetailQuestionPage } from "../../pages/DetailQuestionPage/detailQuestionPage";
 import { CollectionsPage } from "../../pages/CollectionsPage/CollectionsPage";
+import { DetailCollectionPage } from "../../pages/DetailCollectionsPage/DetailCollectionPage";
 
 function App() {
   const [filterValues, filterActions] = useFilterState();
@@ -60,6 +61,7 @@ function App() {
               />
             }
           />
+          <Route path=":title" element={<DetailCollectionPage />} />
         </Route>
       </Route>
     </Routes>

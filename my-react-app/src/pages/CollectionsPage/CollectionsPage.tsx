@@ -1,12 +1,15 @@
-import { useOutletContext } from "react-router-dom";
+import { useState, useMemo } from "react";
+import { useOutletContext, useParams } from "react-router-dom";
 
 import { useCollectionPage } from "@/hooks/useCollectionsPage.js";
+
+import { filterAccess } from "@/utilities/filterAccess.js";
 
 import { CollectionsList } from "@/components/CollectionsList/CollectionsList.js";
 import { CatalogPagination } from "@/components/CatalogPagination/CatalogPagination.js";
 import { Filter } from "@/components/filter/filter.js";
-import type { CollectionsOutletContext } from "@/components/CollectionsLayout/CollectionsLayout.js";
 
+import type { CollectionsOutletContext } from "@/components/CollectionsLayout/CollectionsLayout.js";
 import type { PropsCollectionsPage } from "@/types/CollectionsPage.js";
 
 export function CollectionsPage({
@@ -15,19 +18,25 @@ export function CollectionsPage({
   values,
   actions,
 }: PropsCollectionsPage) {
-  const { filterData, baseUrl, currentFilters } =
+  const { spec = "" } = useParams();
+
+  const [selectedAccess, setSelectedAccess] = useState<string | null>(
+    "Для всех",
+  );
+
+  const { filterData, baseUrl, collectionsData } =
     useOutletContext<CollectionsOutletContext>();
 
-  const { collectionsData } = useCollectionPage(currentFilters);
+  const filteredCollectionsData = useMemo(() => {
+    if (!collectionsData?.data) return [];
 
-  if (!collectionsData?.data) {
-    return <div>Загрузка коллекций...</div>;
-  }
+    return filterAccess(collectionsData.data, selectedAccess);
+  }, [collectionsData, selectedAccess]);
 
   return (
     <main>
       <div className="main_list">
-        <CollectionsList collections={collectionsData.data} />
+        <CollectionsList collections={filteredCollectionsData} spec={spec} />
         <CatalogPagination
           page={pageNumber}
           total={9}
@@ -40,6 +49,8 @@ export function CollectionsPage({
         actions={actions}
         data={filterData}
         exclude={["rating", "status", "skills", "levels"]}
+        selectedAccess={selectedAccess}
+        setSelectedAccess={setSelectedAccess}
       />
     </main>
   );

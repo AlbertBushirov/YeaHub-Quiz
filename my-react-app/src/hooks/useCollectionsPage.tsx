@@ -49,5 +49,5 @@ export const useCollectionPage = (filters: Filters) => {
     selectedRating,
   ]);
 
-  return { collectionsData };
+  return { collectionsData, setCollectionsData };
 };

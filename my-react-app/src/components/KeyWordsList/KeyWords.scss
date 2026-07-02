@@ -1,0 +1,14 @@
+@use "../../styles/variables" as *;
+
+.keywords_container {
+  display: flex;
+  gap: 20px;
+  font-size: 15px;
+
+  span {
+    padding: 5px;
+    border-radius: $radius;
+    color: #17663a;
+    background-color: #dff8ea;
+  }
+}

@@ -40,13 +40,13 @@ export function ListButtons({
               );
             }
 
-            const isActive = s[title] === selected;
+            const isActive = title ? s[title] === selected : false;
             return (
               <li key={s.id || s.title}>
                 <button
                   className={isActive ? "btn-active" : "btn-default"}
                   onClick={() => {
-                    if (setSelected) setSelected(s[title]);
+                    if (setSelected && title) setSelected(s[title]);
                   }}
                 >
                   {s.title}

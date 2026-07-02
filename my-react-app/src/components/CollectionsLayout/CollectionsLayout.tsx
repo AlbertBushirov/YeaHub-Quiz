@@ -1,7 +1,11 @@
 import { useEffect } from "react";
 import { useParams, Outlet } from "react-router-dom";
+
+import { useCollectionPage } from "@/hooks/useCollectionsPage.js";
 import { useFilters } from "@/hooks/useFilters.js";
+
 import type { Filters } from "@/types/filters.js";
+import type { CollectionsResponse } from "@/types/collections.js";
 
 interface FilterActions {
   setKeywords: (value: string) => void;
@@ -20,7 +24,7 @@ interface CollectionsLayoutProps {
 export interface CollectionsOutletContext {
   filterData: ReturnType<typeof useFilters>;
   baseUrl: string;
-  currentFilters: Filters & { spec: string };
+  collectionsData: CollectionsResponse;
 }
 
 export function CollectionsLayout({
@@ -46,12 +50,14 @@ export function CollectionsLayout({
 
   const filterData = useFilters(currentFilters);
 
+  const { collectionsData } = useCollectionPage(currentFilters);
+
   return (
     <Outlet
       context={{
         filterData,
         baseUrl,
-        currentFilters,
+        collectionsData,
       }}
     />
   );

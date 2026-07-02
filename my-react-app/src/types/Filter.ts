@@ -1,4 +1,5 @@
 import type { Dispatch, SetStateAction } from "react";
+import type { CollectionsResponse } from "@/types/collections.js";
 
 export type FilterBlock =
   | "search"
@@ -6,7 +7,8 @@ export type FilterBlock =
   | "skills"
   | "levels"
   | "rating"
-  | "status";
+  | "status"
+  | "acces";
 
 interface Specialization {
   slug: string;
@@ -25,6 +27,10 @@ interface FilterValues {
   selectedSkill: string | null;
   selectedLevels: string | number | null;
   selectedRating: string | number | null;
+}
+export interface CollectionsPropType {
+  originalCollections: CollectionsResponse | null;
+  setCollectionsData: (arg: CollectionsResponse | null) => void;
 }
 
 interface FilterActions {
@@ -47,4 +53,9 @@ export interface FilterProps {
   data: FilterData;
   setTitle?: Dispatch<SetStateAction<string>> | ((title: string) => void);
   exclude?: FilterBlock[];
+  collections?: CollectionsPropType;
+  selectedAccess: string | null;
+  setSelectedAccess:
+    | Dispatch<SetStateAction<string | null>>
+    | ((value: string | null) => void);
 }
