@@ -1,6 +1,6 @@
 import "./App.scss";
 
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
 import { QuestionsContainer } from "../QuestionsContainer/QuestionsContainer";
@@ -23,7 +23,12 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route
-          path="questions/:spec?"
+          path="questions"
+          element={<Navigate to="react-frontend-developer" replace />}
+        />
+
+        <Route
+          path="questions/:spec"
           element={<QuestionsContainer {...sharedProps} />}
         >
           <Route
@@ -39,6 +44,7 @@ function App() {
               />
             }
           />
+
           <Route
             path=":title"
             element={
@@ -46,8 +52,14 @@ function App() {
             }
           />
         </Route>
+
         <Route
-          path="collections/:spec?"
+          path="collections"
+          element={<Navigate to="react-frontend-developer" replace />}
+        />
+
+        <Route
+          path="collections/:spec"
           element={<CollectionsLayout {...sharedProps} />}
         >
           <Route
@@ -61,7 +73,10 @@ function App() {
               />
             }
           />
-          <Route path=":title" element={<DetailCollectionPage />} />
+          <Route
+            path=":spec"
+            element={<DetailCollectionPage title={title} setTitle={setTitle} />}
+          />
         </Route>
       </Route>
     </Routes>

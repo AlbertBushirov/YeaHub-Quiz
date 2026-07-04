@@ -1,0 +1,44 @@
+@use "../../styles/variables" as *;
+
+.detail_collection {
+  @include flex-column;
+  gap: 16px;
+  width: 804px;
+
+  &__header {
+    background-color: $bg-color;
+    padding: 24px 20px;
+    border-radius: $radius;
+    display: flex;
+    gap: 24px;
+  }
+
+  &__title_conteiner,
+  article {
+    flex-direction: column;
+  }
+
+  &__navigation {
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  button {
+    width: max-content;
+  }
+
+  button:disabled {
+    color: grey;
+  }
+}
+
+.description__params {
+  display: flex;
+  gap: 40px;
+  flex-direction: row;
+  span {
+    background-color: $bg-main-color;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+}

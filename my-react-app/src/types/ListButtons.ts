@@ -1,7 +1,7 @@
 import type { Dispatch, SetStateAction } from "react";
 import type { CollectionsPropType } from "@/types/Filter.js";
 
-interface ButtonItem {
+export interface ButtonItem {
   id?: string | number;
   title: string | number;
   slug?: string;
@@ -16,7 +16,7 @@ export type PropsListButtons = {
   basePath?: string;
   name: string;
   title?: string;
-  buttons: ButtonItem[] | ButtonsConfig | null | undefined;
+  buttons: ButtonItem[] | ButtonsConfig | string[] | null | undefined;
   selected?: string | number | null | undefined;
   setSelected?: Dispatch<SetStateAction<any>> | undefined;
   setTitle?:

@@ -1,14 +1,15 @@
-import {
-  Link,
-  Outlet,
-  useLocation,
-  useParams,
-  useSearchParams,
-} from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import type { QuestionResponse } from "@/types/question.js";
 
 import "./questionList.scss";
 
-export function QuestionsList({ questions, spec }) {
+type QuestionsListprops = {
+  questions: QuestionResponse;
+  spec: string;
+};
+
+export function QuestionsList({ questions, spec }: QuestionsListprops) {
   return (
     <ul className="main_list__container">
       {questions?.data.map((q) => {

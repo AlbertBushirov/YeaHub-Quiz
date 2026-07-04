@@ -2,34 +2,36 @@ import { useState, useEffect } from "react";
 
 import BASE_URL from "../api/url.js";
 import { getSpecializations } from "@/api/specializationsApi.js";
+import { getSkills } from "@/api/skillsApi.js";
+import { getPublicQuestions } from "@/api/questionsApi.js";
 
-import type { Specialization, Filters } from "@/types/filters.js";
+import type { Specialization, Skill, Filters } from "@/types/filters.js";
 
 import { useDeBounce } from "@/hooks/useDebounce.js";
 
 export function useFilters(filters: Filters) {
-  const [questions, setQuestions] = useState(null);
+  const [questions, setQuestions] = useState<any>(null);
   const [specializations, setSpecializations] = useState<
     Specialization[] | null
   >(null);
-  const [skills, setSkills] = useState(null);
+  const [skills, setSkills] = useState<Skill[] | null>(null);
 
   const {
-    keywords,
     pageNumber,
     selectedSpec,
     selectedSkill,
     selectedLevels,
     selectedRating,
+    spec,
   } = filters;
 
+  const limit = filters.limit ?? 10;
   const debouncedKeywords = useDeBounce(filters.keywords ?? "", 1500);
 
   useEffect(() => {
     const fetchDataSpecializations = async () => {
       try {
         const data = await getSpecializations();
-
         setSpecializations(data);
       } catch (error) {
         console.error(error);
@@ -38,9 +40,8 @@ export function useFilters(filters: Filters) {
 
     const fetchDataSkills = async () => {
       try {
-        const response = await fetch("https://api.yeatwork.ru/skills");
-        const json = await response.json();
-        setSkills(json);
+        const data = await getSkills();
+        setSkills(data);
       } catch (error) {
         console.error(error);
       }
@@ -51,34 +52,25 @@ export function useFilters(filters: Filters) {
   }, []);
 
   useEffect(() => {
+    if (limit === 0) {
+      setQuestions({ data: [], total: 0 });
+      return;
+    }
+
     const fetchData = async () => {
       try {
-        let url = `${BASE_URL}questions/public-questions?page=${pageNumber}&limit=10`;
+        const data = await getPublicQuestions({
+          pageNumber,
+          limit,
+          keywords: debouncedKeywords,
 
-        if (debouncedKeywords?.trim() !== "") {
-          const searchParam = encodeURIComponent(debouncedKeywords);
-          url += `&keywords=${searchParam}`;
-        }
+          selectedSpec: spec || selectedSpec,
+          selectedSkill,
+          selectedLevels,
+          selectedRating,
+        });
 
-        if (selectedSpec) {
-          url += `&specializationSlug=${selectedSpec}`;
-        }
-
-        if (selectedSkill) {
-          url += `&skillFilterMode[]=${selectedSkill}`;
-        }
-
-        if (selectedLevels) {
-          url += `&complexity[]=${selectedLevels}`;
-        }
-
-        if (selectedRating) {
-          url += `&rate[]=${selectedRating}`;
-        }
-
-        const response = await fetch(url);
-        const json = await response.json();
-        setQuestions(json);
+        setQuestions(data);
       } catch (error) {
         console.error(error);
       }
@@ -89,9 +81,12 @@ export function useFilters(filters: Filters) {
     pageNumber,
     debouncedKeywords,
     selectedSpec,
+    spec,
     selectedSkill,
     selectedLevels,
     selectedRating,
+    limit,
   ]);
+
   return { questions, specializations, skills };
 }

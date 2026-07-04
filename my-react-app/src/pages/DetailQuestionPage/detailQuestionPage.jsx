@@ -39,7 +39,6 @@ export function DetailQuestionPage() {
     const specSlug = question.questionSpecializations?.[0]?.slug || "";
     navigate(`/questions/${specSlug}`);
   };
-
   return (
     <main>
       <BackButton onClick={close} />
@@ -71,7 +70,10 @@ export function DetailQuestionPage() {
           />
         </article>
       </div>
-      <AsideDetail data={question} />
+      <AsideDetail
+        data={question}
+        exclude={["isFree", "specialization", "company", "questions"]}
+      />
     </main>
   );
 }

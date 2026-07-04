@@ -19,6 +19,7 @@ export type CollectionSpecialization = {
   title: string;
   description: string;
   imageSrc: string | null;
+  slug: string;
 };
 
 export type CollectionAuthor = {

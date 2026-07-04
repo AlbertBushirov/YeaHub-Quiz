@@ -25,7 +25,7 @@ export function Header() {
             </li>
             <li>
               <NavLink to="/collections" className={setActive}>
-                Материалы
+                Коллекции
               </NavLink>
             </li>
             <li>

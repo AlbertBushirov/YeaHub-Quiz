@@ -1,6 +1,6 @@
 import { CatalogPagination } from "../../components/CatalogPagination/CatalogPagination";
 import { QuestionsList } from "../../components/QuestionsList/questionsList";
-import { Filter } from "../../components/filter/filter";
+import { Filter } from "../../components/Filter/filter";
 import { HeaderList } from "../../components/HeaderList/HeaderList";
 
 import { useOutletContext, useParams } from "react-router-dom";

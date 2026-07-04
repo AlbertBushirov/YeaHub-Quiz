@@ -1,49 +1,56 @@
-import { useParams, useOutletContext, useNavigate } from "react-router-dom";
-
 import { BackButton } from "@/components/BackButton/BackButton.js";
 import { AsideDetail } from "@/components/AsideDetail/AsideDetail.js";
+import { HeaderList } from "@/components/HeaderList/HeaderList.js";
+import { CollectionQuestionsContent } from "@/components/CollectionsContent/CollectionsContent.js";
+import { CollectionHeader } from "@/components/CollectionHeader/CollectionHeader.js";
 
-import { useCollectionPage } from "@/hooks/useCollectionsPage.js";
+import { useDetailCollection } from "@/hooks/useDetailCollection.js";
 
-import type { CollectionsOutletContext } from "@/components/CollectionsLayout/CollectionsLayout.js";
+import "./DetailCollectionPage.scss";
 
-export function DetailCollectionPage() {
-  const { title } = useParams();
-  const navigate = useNavigate();
+type DetailCollectionPageprops = {
+  title: string;
+  setTitle: (title: string) => void;
+};
 
-  const { collectionsData } = useOutletContext<CollectionsOutletContext>();
-
-  const decodedUrlTitle = decodeURIComponent(title || "").trim();
-
-  const collection = collectionsData.data.find(
-    (c) => String(c.slug) === decodedUrlTitle,
-  );
-
-  const close = () => {
-    navigate(-1);
-  };
+export function DetailCollectionPage({
+  title,
+  setTitle,
+}: DetailCollectionPageprops) {
+  const { collection, questions, specializationSlug, handleClose } =
+    useDetailCollection(setTitle);
 
   if (!collection) {
     return (
       <main>
-        <BackButton onClick={close} />
-        <div>Коллекция не найдена</div>
+        <BackButton onClick={handleClose} />
+        <div>Коллекция не найдена или загружается...</div>
       </main>
     );
   }
-
   return (
     <main>
-      <BackButton onClick={close} />
-      <div>
-        <div>
-          <img className="" src={collection.imageSrc} alt={collection.title} />
-          <div>
-            <h1>{collection.title}</h1>
-            <p>{collection.description}</p>
-          </div>
+      <BackButton onClick={handleClose} />
+
+      <div className="detail_collection">
+        <CollectionHeader
+          imageSrc={collection.imageSrc}
+          title={collection.title}
+          description={collection.description}
+        />
+
+        <div className="main_list">
+          <HeaderList title={`Вопросы ${title}`} />
+          <CollectionQuestionsContent
+            isFree={collection.isFree}
+            questionsCount={collection.questionsCount}
+            questions={questions}
+            specializationSlug={specializationSlug}
+          />
         </div>
       </div>
+
+      <AsideDetail data={collection} exclude={["skills", "levels"]} />
     </main>
   );
 }

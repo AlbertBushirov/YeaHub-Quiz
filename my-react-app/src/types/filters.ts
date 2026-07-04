@@ -14,10 +14,12 @@ export type Skill = {
 };
 
 export interface Filters {
-  keywords: string;
+  keywords?: string;
   selectedSpec: string | null;
   pageNumber: number;
   selectedSkill: string | null;
   selectedLevels: string | number | null;
   selectedRating: string | number | null;
+  limit?: number;
+  spec?: string;
 }

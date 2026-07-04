@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { NavLink } from "react-router-dom";
 
-import type { PropsListButtons } from "@/types/ListButtons.js";
+import type { PropsListButtons, ButtonItem } from "@/types/ListButtons.js";
 
 export function ListButtons({
   name,
@@ -22,7 +22,7 @@ export function ListButtons({
       <span>{name}</span>
       <ul>
         {title !== "none" &&
-          displayedData.map((s) => {
+          (displayedData as ButtonItem[]).map((s) => {
             if (name === "Специализация") {
               const isSpecActive = s.slug === selected;
               return (

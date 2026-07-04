@@ -2,7 +2,7 @@ import BASE_URL from "@/api/url.js";
 
 import type { Skill } from "@/types/filters.js";
 
-export const getSpecializations = async ({}: Promise<Skill>) => {
+export const getSkills = async (): Promise<Skill[]> => {
   const response = await fetch(`${BASE_URL}skills`);
 
   if (!response.ok) {

@@ -18,7 +18,6 @@ export function CollectionsList({ collections, spec }: CollectionListProps) {
   if (!collections) {
     return <div>Загрузка коллекций...</div>;
   }
-  console.log(collections);
   return (
     <div>
       <HeaderList title="Коллекции" />

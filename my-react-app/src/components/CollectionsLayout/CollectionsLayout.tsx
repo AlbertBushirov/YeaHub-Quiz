@@ -41,16 +41,32 @@ export function CollectionsLayout({
     if (urlSpec !== filterValues.selectedSpec) {
       filterActions.setSelectedSpec(urlSpec);
     }
-  }, [urlSpec, filterValues.selectedSpec, filterActions]);
+  }, [urlSpec, filterValues.selectedSpec, filterActions, filterValues.limit]);
 
   const currentFilters = {
-    ...filterValues,
-    spec: urlSpec || filterValues.selectedSpec,
-  };
+    pageNumber: filterValues.pageNumber,
+
+    spec: urlSpec || filterValues.selectedSpec || "",
+
+    selectedSpec: filterValues.selectedSpec || "",
+
+    keywords: filterValues.keywords ?? undefined,
+    selectedSkill: filterValues.selectedSkill ?? undefined,
+
+    selectedLevels:
+      filterValues.selectedLevels !== null
+        ? String(filterValues.selectedLevels)
+        : undefined,
+    selectedRating:
+      filterValues.selectedRating !== null
+        ? String(filterValues.selectedRating)
+        : undefined,
+    limit: filterValues.limit ?? undefined,
+  } as Filters;
 
   const filterData = useFilters(currentFilters);
 
-  const { collectionsData } = useCollectionPage(currentFilters);
+  const { collectionsData } = useCollectionPage(currentFilters as any);
 
   return (
     <Outlet

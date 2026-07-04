@@ -1,13 +1,11 @@
 import { useState, useMemo } from "react";
 import { useOutletContext, useParams } from "react-router-dom";
 
-import { useCollectionPage } from "@/hooks/useCollectionsPage.js";
-
 import { filterAccess } from "@/utilities/filterAccess.js";
 
 import { CollectionsList } from "@/components/CollectionsList/CollectionsList.js";
 import { CatalogPagination } from "@/components/CatalogPagination/CatalogPagination.js";
-import { Filter } from "@/components/filter/filter.js";
+import { Filter } from "@/components/Filter/filter.js";
 
 import type { CollectionsOutletContext } from "@/components/CollectionsLayout/CollectionsLayout.js";
 import type { PropsCollectionsPage } from "@/types/CollectionsPage.js";
