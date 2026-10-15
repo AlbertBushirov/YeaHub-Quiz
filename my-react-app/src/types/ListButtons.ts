@@ -2,7 +2,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { CollectionsPropType } from "@/types/Filter.js";
 
 export interface ButtonItem {
-  id?: string | number;
+  id: string | number;
   title: string | number;
   slug?: string;
   [key: string]: any;

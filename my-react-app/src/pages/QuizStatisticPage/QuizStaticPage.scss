@@ -1,0 +1,17 @@
+.DetailQuizPage {
+  &__list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  &__item {
+    display: flex;
+    gap: 10px;
+    &__info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+  }
+}

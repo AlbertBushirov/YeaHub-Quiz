@@ -1,0 +1,17 @@
+@use "../../../styles/variables" as *;
+
+.QuantityQuestion {
+  display: flex;
+  flex-direction: column;
+}
+
+.Counter_wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+
+  max-width: 50px;
+  border: 1px solid $color-black;
+  border-radius: 12px;
+}

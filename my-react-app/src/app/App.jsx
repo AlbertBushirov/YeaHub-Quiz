@@ -3,15 +3,19 @@ import "./App.scss";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useState } from "react";
 
-import { QuestionsContainer } from "../QuestionsContainer/QuestionsContainer";
-import { CollectionsLayout } from "../CollectionsLayout/CollectionsLayout";
-import { Layout } from "../Layout/Layout";
-import { useFilterState } from "../../hooks/useFilterState";
+import { QuestionsContainer } from "../components/QuestionsContainer/QuestionsContainer";
+import { CollectionsLayout } from "../components/CollectionsLayout/CollectionsLayout";
+import { Layout } from "../components/Layout/Layout";
+import { useFilterState } from "../hooks/useFilterState";
 
-import { QuestionsPage } from "../../pages/questionsPage/questionsPage";
-import { DetailQuestionPage } from "../../pages/DetailQuestionPage/detailQuestionPage";
-import { CollectionsPage } from "../../pages/CollectionsPage/CollectionsPage";
-import { DetailCollectionPage } from "../../pages/DetailCollectionsPage/DetailCollectionPage";
+// Страницы
+import { QuestionsPage } from "../pages/QuestionsPage/questionsPage";
+import { DetailQuestionPage } from "../pages/DetailQuestionPage/detailQuestionPage";
+import { CollectionsPage } from "../pages/CollectionsPage/CollectionsPage";
+import { DetailCollectionPage } from "../pages/DetailCollectionsPage/DetailCollectionPage";
+import { QuizPage } from "../pages/QuizPage/quizPage";
+import { DetailQuizPage } from "../pages/DetailQuizPage/DetailQuizPage";
+import { QuizStatisticPage } from "../pages/QuizStatisticPage/QuizStatisticPage";
 
 function App() {
   const [filterValues, filterActions] = useFilterState();
@@ -78,6 +82,9 @@ function App() {
             element={<DetailCollectionPage title={title} setTitle={setTitle} />}
           />
         </Route>
+        <Route path="quiz" element={<QuizPage />}></Route>
+        <Route path="quiz/questions" element={<DetailQuizPage />} />
+        <Route path="quiz/statistic" element={<QuizStatisticPage />} />
       </Route>
     </Routes>
   );

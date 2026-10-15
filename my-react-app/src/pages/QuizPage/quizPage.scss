@@ -1,0 +1,32 @@
+@use "../../styles/variables" as *;
+
+.QuizPage {
+  @include flex-column;
+  gap: 25px;
+  padding: 24px 20px 40px;
+  background-color: $bg-color;
+  border-radius: $radius;
+  font-size: $font-size;
+  max-width: 1200px;
+
+  &__category {
+    display: flex;
+    gap: 150px;
+    div {
+      margin-bottom: 30px;
+
+      gap: 10px;
+    }
+
+    &__leftColon {
+      max-width: 800px;
+    }
+  }
+
+  ul {
+    flex-wrap: wrap;
+    gap: 8px;
+    display: flex;
+    overflow-y: auto;
+  }
+}

@@ -2,7 +2,7 @@ import type { FilterProps, FilterBlock } from "@/types/Filter.js";
 
 import { type ChangeEvent } from "react";
 
-import { ListButtons } from "../ListButtons/listButtons.js";
+import { ListButtons } from "@/components/ListButtons/ListButtons.js";
 
 import {
   levelsConfig,

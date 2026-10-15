@@ -3,7 +3,6 @@ import { useParams, useOutletContext, useNavigate } from "react-router-dom";
 import { QuestionNavigation } from "../../components/QuestionNavigation/QuestionNavigation";
 import { BackButton } from "../../components/BackButton/BackButton";
 import { AsideDetail } from "../../components/AsideDetail/AsideDetail";
-import { ListButtons } from "../../components/ListButtons/listButtons";
 
 import { useQuestionNavigation } from "../../hooks/useQuestionNavigation";
 
