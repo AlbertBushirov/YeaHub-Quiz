@@ -1,4 +1,4 @@
-import { ListButtons } from "@/components/ListButtons/listButtons.js";
+import { ListButtons } from "@/components/ListButtons/ListButtons.js";
 
 import type { CollectionSpecialization } from "@/types/collections.js";
 

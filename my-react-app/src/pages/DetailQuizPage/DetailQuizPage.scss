@@ -1,0 +1,70 @@
+@use "../../styles/variables" as *;
+
+.DetailQuizPage {
+  @include flex-column;
+  gap: 25px;
+  padding: 24px 20px 40px;
+  background-color: $bg-color;
+  border-radius: $radius;
+  font-size: $font-size;
+  width: 1200px;
+
+  &__question {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__list {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__category {
+    display: flex;
+    gap: 150px;
+    div {
+      margin-bottom: 30px;
+      @include flex-column;
+      gap: 10px;
+    }
+
+    &__leftColon {
+      max-width: 800px;
+    }
+  }
+
+  &__navigation {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__end {
+    display: flex;
+    justify-content: end;
+  }
+
+  &__button_KNOWN {
+    display: flex;
+    gap: 10px;
+  }
+
+  button {
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    &.active {
+      color: $bg-button-active;
+    }
+  }
+
+  hr {
+    border: none;
+    height: 1px;
+    background-color: #ccc;
+    margin: 20px 0;
+  }
+}

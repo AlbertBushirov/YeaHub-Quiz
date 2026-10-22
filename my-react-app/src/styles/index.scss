@@ -158,3 +158,17 @@ button:not(.arrow_right):not(.arrow_left):hover {
   background-color: $hover-button;
   color: $color-active;
 }
+
+.btn-active {
+  display: inline-block;
+  padding: 10px;
+  border: 1px solid $bg-button-active;
+  border-radius: 12px;
+}
+
+.btn-default {
+  display: inline-block;
+  padding: 10px;
+  border: $border-default;
+  border-radius: 12px;
+}

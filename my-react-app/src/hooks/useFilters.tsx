@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 
-import BASE_URL from "../api/url.js";
 import { getSpecializations } from "@/api/specializationsApi.js";
 import { getSkills } from "@/api/skillsApi.js";
 import { getPublicQuestions } from "@/api/questionsApi.js";
