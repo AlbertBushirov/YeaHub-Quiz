@@ -1,43 +1,122 @@
 import { useParams, useOutletContext, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 import { QuestionNavigation } from "../../components/QuestionNavigation/QuestionNavigation";
 import { BackButton } from "../../components/BackButton/BackButton";
 import { AsideDetail } from "../../components/AsideDetail/AsideDetail";
+import {
+  getPublicQuestions,
+  getPublicQuestionById,
+} from "../../api/questionsApi";
 
 import { useQuestionNavigation } from "../../hooks/useQuestionNavigation";
 
 import "./detailQuestionPage.scss";
 
 export function DetailQuestionPage() {
-  const { title } = useParams();
+  // Возвращаем чтение title (куда попадает slug из URL)
+  const { title: slug } = useParams();
   const navigate = useNavigate();
-  const { questions } = useOutletContext();
 
-  const decodedUrlTitle = decodeURIComponent(title || "").trim();
+  const context = useOutletContext() || {};
+  const contextQuestions = context.questions?.data || [];
+  const decodedSlug = decodeURIComponent(slug || "").trim();
 
-  const currentIndex = questions?.data
-    ? questions.data.findIndex((q) => String(q.slug).trim() === decodedUrlTitle)
-    : -1;
+  const [localQuestion, setLocalQuestion] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const { handlePrev, handleNext, hasPrev, hasNext } = useQuestionNavigation(
-    questions?.data || [],
-    currentIndex,
+  const contextIndex = contextQuestions.findIndex(
+    (q) => String(q.slug).trim() === decodedSlug,
   );
+  const isFoundInContext = contextIndex !== -1;
+  const question = isFoundInContext
+    ? contextQuestions[contextIndex]
+    : localQuestion;
 
-  if (!questions || !questions.data) {
-    return <div>Загрузка данных...</div>;
-  }
+  const { handlePrev, handleNext, hasPrev, hasNext } =
+    typeof useQuestionNavigation === "function"
+      ? useQuestionNavigation(contextQuestions, contextIndex)
+      : {
+          handlePrev: () => {},
+          handleNext: () => {},
+          hasPrev: false,
+          hasNext: false,
+        };
 
-  if (currentIndex === -1) {
-    return <div>Вопрос не найден</div>;
-  }
+  useEffect(() => {
+    if (isFoundInContext) return;
 
-  const question = questions.data[currentIndex];
+    const controller = new AbortController();
+
+    const fetchIsolatedQuestion = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const response = await getPublicQuestions(
+          {
+            pageNumber: 1,
+            limit: 200,
+            keywords: decodedSlug,
+          },
+          controller.signal,
+        );
+
+        const found = response.data?.find(
+          (q) => String(q.slug).trim() === decodedSlug,
+        );
+
+        if (found) {
+          setLocalQuestion(found);
+        } else {
+          setError("Вопрос не найден в базе данных");
+        }
+      } catch (err) {
+        if (err.name === "AbortError") return;
+        setError(err.message || "Не удалось загрузить данные вопроса");
+      } finally {
+        if (!controller.signal.aborted) {
+          setIsLoading(false);
+        }
+      }
+    };
+
+    if (decodedSlug) {
+      fetchIsolatedQuestion();
+    }
+
+    return () => controller.abort();
+  }, [decodedSlug, isFoundInContext]);
 
   const close = () => {
-    const specSlug = question.questionSpecializations?.[0]?.slug || "";
-    navigate(`/questions/${specSlug}`);
+    const specSlug = question?.questionSpecializations?.[0]?.slug || "";
+    navigate(specSlug ? `/questions/${specSlug}` : "/questions");
   };
+
+  if (isLoading && !question) {
+    return (
+      <main>
+        <div className="loading-screen">Загрузка информации о вопросе...</div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main>
+        <div className="error-screen">{error}</div>
+      </main>
+    );
+  }
+
+  if (!question) {
+    return (
+      <main>
+        <div className="not-found-screen">Вопрос не найден</div>
+      </main>
+    );
+  }
+
   return (
     <main>
       <BackButton onClick={close} />
@@ -47,12 +126,14 @@ export function DetailQuestionPage() {
           <p>{question.description}</p>
         </div>
 
-        <QuestionNavigation
-          onNext={handleNext}
-          onPrev={handlePrev}
-          hasNext={hasNext}
-          hasPrev={hasPrev}
-        />
+        {isFoundInContext && (
+          <QuestionNavigation
+            onNext={handleNext}
+            onPrev={handlePrev}
+            hasNext={hasNext}
+            hasPrev={hasPrev}
+          />
+        )}
 
         <article>
           <h2>Краткий ответ</h2>

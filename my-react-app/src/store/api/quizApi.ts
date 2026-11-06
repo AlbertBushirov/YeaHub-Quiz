@@ -2,7 +2,12 @@ import { baseApi } from "./baseApi.js";
 import type { QuizParams, QuizResponse } from "../../types/quiz.js";
 import type { Question } from "../../types/question.js";
 
-export const quizApi = baseApi.injectEndpoints({
+const enhancedBaseApi = baseApi.enhanceEndpoints({
+  addTagTypes: ["QuizQuestions"],
+});
+
+export const quizApi = enhancedBaseApi.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getQuizQuestions: builder.query<Question[], QuizParams>({
       query: ({ specialization, skills, complexity, limit }) => ({
@@ -19,7 +24,16 @@ export const quizApi = baseApi.injectEndpoints({
         },
       }),
       transformResponse: (response: QuizResponse) => response.questions,
+
+      providesTags: ["QuizQuestions"],
+    }),
+
+    resetQuizCache: builder.mutation<void, void>({
+      queryFn: () => ({ data: undefined }),
+
+      invalidatesTags: ["QuizQuestions"],
     }),
   }),
 });
-export const { useGetQuizQuestionsQuery } = quizApi;
+
+export const { useGetQuizQuestionsQuery, useResetQuizCacheMutation } = quizApi;

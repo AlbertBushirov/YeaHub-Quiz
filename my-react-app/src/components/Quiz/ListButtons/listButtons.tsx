@@ -4,13 +4,19 @@ import { useFormContext, useWatch } from "react-hook-form";
 
 import { useCheckUrlParam } from "@/hooks/useCheckUrlParam.js";
 
-import type { PropsListButtons, ButtonItem } from "@/types/ListButtons.js";
+import type { PropsListButtons } from "@/types/ListButtons.js";
 
-const toggleParamArray = (currentArray: number[], id: number): number[] => {
-  const numericId = Number(id);
-  return currentArray.includes(numericId)
-    ? currentArray.filter((item) => item !== numericId)
-    : [...currentArray, numericId];
+const toggleParamArray = (
+  currentArray: number[],
+  newValues: number[],
+): number[] => {
+  const hasAny = newValues.some((val) => currentArray.includes(val));
+
+  if (hasAny) {
+    return currentArray.filter((item) => !newValues.includes(item));
+  } else {
+    return [...currentArray, ...newValues];
+  }
 };
 
 export function ListButtons({
@@ -19,14 +25,12 @@ export function ListButtons({
   buttons,
   setSelected,
   setTitle,
-  selected,
   basePath,
 }: PropsListButtons) {
   const [isExpanded, setIsExpanded] = useState(false);
   const location = useLocation();
 
   const { setValue, control } = useFormContext();
-
   const formValues = useWatch({ control });
 
   const allData = Array.isArray(buttons) ? buttons : buttons?.data || [];
@@ -37,20 +41,23 @@ export function ListButtons({
   const handleButtonClick = (item: any) => {
     if (!isQuizPage) return;
 
-    const itemId = Number(item.id);
-
     if (name === "Специализация") {
-      setValue("specialization", itemId);
+      setValue("specialization", Number(item.id));
     }
 
     if (name === "Навыки") {
       const currentSkills = (formValues.skills as number[]) || [];
-      setValue("skills", toggleParamArray(currentSkills, itemId));
+
+      setValue("skills", toggleParamArray(currentSkills, [Number(item.id)]));
     }
 
     if (name === "Сложность") {
       const currentComplexity = (formValues.complexity as number[]) || [];
-      setValue("complexity", toggleParamArray(currentComplexity, itemId));
+
+      const itemValues = Array.isArray(item.values)
+        ? item.values.map(Number)
+        : [];
+      setValue("complexity", toggleParamArray(currentComplexity, itemValues));
     }
   };
 
@@ -59,7 +66,7 @@ export function ListButtons({
       <span>{name}</span>
       <ul>
         {buttonTitleProp === "title" &&
-          (displayedData as ButtonItem[]).map((s) => {
+          (displayedData as any[]).map((s) => {
             let isSpecActive = false;
 
             if (isQuizPage && formValues) {
@@ -71,22 +78,35 @@ export function ListButtons({
                   Number(s.id),
                 );
               } else if (name === "Сложность") {
-                isSpecActive = (
-                  (formValues.complexity as number[]) || []
-                ).includes(Number(s.id));
+                const currentComplexity =
+                  (formValues.complexity as number[]) || [];
+                const itemValues = Array.isArray(s.values)
+                  ? s.values.map(Number)
+                  : [];
+                isSpecActive = itemValues.some((val) =>
+                  currentComplexity.includes(val),
+                );
               }
             }
+
+            if (!isQuizPage) {
+              if (name === "Специализация") {
+                isSpecActive = useCheckUrlParam("specialization", s.id);
+              } else if (name === "Навыки") {
+                isSpecActive = useCheckUrlParam("skills", s.id);
+              } else if (name === "Сложность") {
+                isSpecActive = useCheckUrlParam("complexity", s.id);
+              }
+            }
+
             if (name === "Специализация") {
-              isSpecActive = useCheckUrlParam("specialization", s.id);
               if (isQuizPage) {
                 return (
                   <li key={s.id || s.slug}>
                     <button
                       type="button"
                       className={isSpecActive ? "btn-active" : "btn-default"}
-                      onClick={() => {
-                        handleButtonClick(s);
-                      }}
+                      onClick={() => handleButtonClick(s)}
                     >
                       {s.title}
                     </button>
@@ -108,14 +128,8 @@ export function ListButtons({
                 </li>
               );
             }
-            if (name === "Навыки") {
-              isSpecActive = useCheckUrlParam("skills", s.id);
-            }
 
-            if (name === "Сложность") {
-              isSpecActive = useCheckUrlParam("complexity", s.id);
-            }
-
+            // Рендер кнопок Навыки и Сложность
             return (
               <li key={s.id || s.title}>
                 <button

@@ -38,6 +38,7 @@ const quizStateSlice = createSlice({
   reducers: {
     setSpecialization(state, action: PayloadAction<number>) {
       state.params.specialization = action.payload;
+      state.params.skills = [];
     },
 
     toggleSkillInParams(state, action: PayloadAction<number>) {
@@ -67,7 +68,6 @@ const quizStateSlice = createSlice({
     },
     setCurrentQuestionId(state, action: PayloadAction<number>) {
       state.currentQuestionId = action.payload;
-      setQuizAnswer;
     },
     setQuizAnswer(state, action: PayloadAction<any>) {
       const existing = state.answers.find(

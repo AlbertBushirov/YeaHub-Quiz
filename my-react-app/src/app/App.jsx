@@ -16,6 +16,7 @@ import { DetailCollectionPage } from "../pages/DetailCollectionsPage/DetailColle
 import { QuizPage } from "../pages/QuizPage/quizPage";
 import { DetailQuizPage } from "../pages/DetailQuizPage/DetailQuizPage";
 import { QuizStatisticPage } from "../pages/QuizStatisticPage/QuizStatisticPage";
+import NotFoundPage from "../pages/NotFoundPage.tsx";
 
 function App() {
   const [filterValues, filterActions] = useFilterState();
@@ -26,6 +27,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
+        <Route path="/" element={<Navigate to="/quiz" replace />} />
         <Route
           path="questions"
           element={<Navigate to="react-frontend-developer" replace />}
@@ -78,14 +80,17 @@ function App() {
             }
           />
           <Route
-            path=":spec"
+            path=":collectionSlug"
             element={<DetailCollectionPage title={title} setTitle={setTitle} />}
           />
         </Route>
+
         <Route path="quiz" element={<QuizPage />}></Route>
         <Route path="quiz/questions" element={<DetailQuizPage />} />
         <Route path="quiz/statistic" element={<QuizStatisticPage />} />
       </Route>
+
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

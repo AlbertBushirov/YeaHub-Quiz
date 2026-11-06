@@ -16,7 +16,7 @@ export function QuestionsPage({
   const { spec } = useParams();
 
   const { questions, specializations, skills, basePath } = useOutletContext();
-
+  const total = questions ? Math.round(questions.total / 10) : 24;
   return (
     <>
       <main>
@@ -25,7 +25,7 @@ export function QuestionsPage({
           <QuestionsList spec={spec} questions={questions} />
           <CatalogPagination
             page={pageNumber}
-            total={24}
+            total={total}
             onChange={setPageNumber}
           />
         </div>

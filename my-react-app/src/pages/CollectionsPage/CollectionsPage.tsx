@@ -31,13 +31,15 @@ export function CollectionsPage({
     return filterAccess(collectionsData.data, selectedAccess);
   }, [collectionsData, selectedAccess]);
 
+  const total = collectionsData ? Math.round(collectionsData.total / 10) : 9;
+
   return (
     <main>
       <div className="main_list">
         <CollectionsList collections={filteredCollectionsData} spec={spec} />
         <CatalogPagination
           page={pageNumber}
-          total={9}
+          total={total}
           onChange={setPageNumber}
         />
       </div>

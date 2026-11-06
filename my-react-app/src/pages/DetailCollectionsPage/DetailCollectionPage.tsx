@@ -49,7 +49,6 @@ export function DetailCollectionPage({
           />
         </div>
       </div>
-
       <AsideDetail data={collection} exclude={["skills", "levels"]} />
     </main>
   );

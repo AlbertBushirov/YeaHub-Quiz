@@ -1,14 +1,26 @@
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-import { useDetailQuizPage } from "@/hooks/useDetailQuizPage.js";
+import { useAppSelector } from "@/hooks/hooks.js";
 
 import question_image from "../../images/Question_image.png";
 
 import "./QuizStaticPage.scss";
 
 export function QuizStatisticPage() {
-  const { questions, answers } = useDetailQuizPage();
   const navigate = useNavigate();
+
+  const questions = useAppSelector((state) => state.quizState.questions);
+  const answers = useAppSelector((state) => state.quizState.answers);
+
+  useEffect(() => {
+    if (questions.length === 0) {
+      navigate("/quiz", { replace: true });
+    }
+  }, [questions, navigate]);
+
+  if (questions.length === 0) {
+    return null;
+  }
   return (
     <main>
       <div className="DetailQuizPage">

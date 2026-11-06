@@ -21,5 +21,6 @@ export interface Filters {
   selectedLevels: string | number | null;
   selectedRating: string | number | null;
   limit?: number;
-  spec?: string;
+  spec?: string | null;
+  collection?: string | number | null | undefined;
 }

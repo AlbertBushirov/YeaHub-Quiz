@@ -30,16 +30,31 @@ export function QuizPage() {
   const methods = useForm<QuizFormValues>({
     defaultValues: {
       specialization: Number(searchParams.get("specialization") ?? 11),
-      skills: searchParams.get("skills")?.split(",").map(Number) ?? [],
-      complexity: searchParams.get("complexity")?.split(",").map(Number) ?? [],
+      skills:
+        searchParams.get("skills")?.split(",").filter(Boolean).map(Number) ??
+        [],
+      complexity:
+        searchParams
+          .get("complexity")
+          ?.split(",")
+          .filter(Boolean)
+          .map(Number) ?? [],
       limit: Number(searchParams.get("limit") ?? 1),
     },
   });
+
+  const { setValue, handleSubmit } = methods;
 
   const [specialization, skills = [], complexity = [], limit] = useWatch({
     control: methods.control,
     name: ["specialization", "skills", "complexity", "limit"],
   });
+
+  useEffect(() => {
+    if (specialization) {
+      setValue("skills", []);
+    }
+  }, [specialization, setValue]);
 
   const skillsString = skills?.join(",") || "";
   const complexityString = complexity?.join(",") || "";
@@ -90,7 +105,7 @@ export function QuizPage() {
         <FormProvider {...methods}>
           <form
             className="QuizPage__category"
-            onSubmit={methods.handleSubmit(onSubmit)}
+            onSubmit={handleSubmit(onSubmit)}
           >
             <div className="QuizPage__category__leftColon">
               <Specialization />

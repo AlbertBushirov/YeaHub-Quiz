@@ -7,7 +7,8 @@ import "./DetailQuizPage.scss";
 export function DetailQuizPage() {
   const {
     currentQuestion,
-    isQuizQuestionsLoading,
+    isQuizQuestionsLoading, // В хуке мы объединили isLoading и isFetching
+    isQuizQuestionsError,
     handlePrevQuestion,
     handleNextQuestion,
     isPrevDisabled,
@@ -22,9 +23,58 @@ export function DetailQuizPage() {
     handleAnswerUnknown,
     currentAnswer,
   } = useDetailQuizPage();
+
   const navigate = useNavigate();
-  if (isQuizQuestionsLoading) return <main>Загрузка...</main>;
-  if (!currentQuestion) return <main>Вопрос не найден</main>;
+
+  if (isQuizQuestionsLoading) {
+    return (
+      <main>
+        <div className="quiz-loader">
+          <p>Загрузка вопросов квиза...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (isQuizQuestionsError) {
+    return (
+      <main>
+        <div className="quiz-error-container">
+          <h2>Упс! Что-то пошло не так</h2>
+          <p>
+            Не удалось загрузить вопросы. Возможно, выбрана несовместимая
+            комбинация фильтров или произошел сбой сети.
+          </p>
+          <button onClick={() => window.history.back()}>
+            Вернуться к настройкам
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  if (questions.length === 0) {
+    return (
+      <main>
+        <div className="quiz-empty-container">
+          <p>Вопросы по данным критериям не найдены.</p>
+          <button onClick={() => window.history.back()}>
+            Изменить настройки
+          </button>
+        </div>
+      </main>
+    );
+  }
+
+  if (!currentQuestion) {
+    return (
+      <main>
+        <div className="quiz-empty-container">
+          <p>Ошибка отображения текущего вопроса.</p>
+        </div>
+      </main>
+    );
+  }
 
   const isFinishDisabled =
     !isNextDisabled || currentAnswer?.answer === undefined;

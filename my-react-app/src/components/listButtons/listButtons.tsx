@@ -16,7 +16,6 @@ export function ListButtons({
   const [isExpanded, setIsExpanded] = useState(false);
   const allData = Array.isArray(buttons) ? buttons : buttons?.data || [];
   const displayedData = isExpanded ? allData : allData.slice(0, 5);
-
   return (
     <div>
       <span>{name}</span>

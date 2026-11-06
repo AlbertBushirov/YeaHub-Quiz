@@ -82,7 +82,7 @@ export function Filter({
       {shouldRender("levels") && (
         <ListButtons
           name="Уровень сложности"
-          title="id"
+          title="title"
           buttons={levelsConfig}
           selected={selectedLevels}
           setSelected={setSelectedLevels}

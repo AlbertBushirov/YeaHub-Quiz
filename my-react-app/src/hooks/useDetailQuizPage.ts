@@ -10,6 +10,7 @@ import {
 import { useQuestionNav } from "./useQuestionsNav.js";
 
 export const useDetailQuizPage = () => {
+  const dispatch = useAppDispatch();
   const quizParams = useAppSelector((state) => state.quizState.params);
 
   const queryArgs = quizParams
@@ -24,13 +25,11 @@ export const useDetailQuizPage = () => {
   const {
     data: quizQuestions = [],
     isLoading: isQuizQuestionsLoading,
+    isFetching: isQuizQuestionsFetching,
     isError: isQuizQuestionsError,
   } = useGetQuizQuestionsQuery(queryArgs);
 
-  const dispatch = useAppDispatch();
-
   const questions = useAppSelector((state) => state.quizState.questions);
-
   const currentQuestionId = useAppSelector(
     (state) => state.quizState.currentQuestionId,
   );
@@ -40,20 +39,20 @@ export const useDetailQuizPage = () => {
   const [heightAnswer, setHeightAnswer] = useState(0);
 
   useEffect(() => {
-    const firstQuestion = quizQuestions[0];
-    if (quizQuestions.length > 0 && questions.length === 0 && firstQuestion) {
+    if (quizQuestions.length > 0 && !isQuizQuestionsFetching) {
       dispatch(setQuestions(quizQuestions));
 
-      dispatch(setCurrentQuestionId(firstQuestion.id));
+      const firstQuestion = quizQuestions[0];
+      if (firstQuestion) {
+        dispatch(setCurrentQuestionId(firstQuestion.id));
+      }
     }
-  }, [quizQuestions, questions, dispatch]);
+  }, [quizQuestions, isQuizQuestionsFetching, dispatch]);
 
   const currentQuestion = questions.find(
     (question) => question.id === currentQuestionId,
   );
-
   const answers = useAppSelector((state) => state.quizState.answers);
-
   const currentAnswer = answers.find(
     (answer) => answer.questionId === currentQuestion?.id,
   );
@@ -65,6 +64,7 @@ export const useDetailQuizPage = () => {
     nextQuestionId,
     currentIndex,
   } = useQuestionNav(questions, Number(currentQuestionId));
+
   const currentQuestionCount = currentIndex + 1;
 
   function handlePrevQuestion() {
@@ -72,6 +72,7 @@ export const useDetailQuizPage = () => {
     dispatch(setCurrentQuestionId(Number(prevQuestionId)));
     setOpenAnswer(false);
   }
+
   function handleNextQuestion() {
     if (nextQuestionId === null || currentAnswer === undefined) return;
     dispatch(setCurrentQuestionId(Number(nextQuestionId)));
@@ -93,6 +94,7 @@ export const useDetailQuizPage = () => {
       }),
     );
   }
+
   function handleAnswerUnknown() {
     if (!currentQuestion) return;
     dispatch(
@@ -108,7 +110,7 @@ export const useDetailQuizPage = () => {
     questions,
     currentQuestion,
     currentQuestionId,
-    isQuizQuestionsLoading,
+    isQuizQuestionsLoading: isQuizQuestionsLoading || isQuizQuestionsFetching,
     isQuizQuestionsError,
 
     handlePrevQuestion,
@@ -129,7 +131,6 @@ export const useDetailQuizPage = () => {
 
     answers,
     currentAnswer,
-
     nextQuestionId,
   };
 };

@@ -22,6 +22,7 @@ export function useFilters(filters: Filters) {
     selectedLevels,
     selectedRating,
     spec,
+    collection,
   } = filters;
 
   const limit = filters.limit ?? 10;
@@ -62,7 +63,7 @@ export function useFilters(filters: Filters) {
           pageNumber,
           limit,
           keywords: debouncedKeywords,
-
+          collection,
           selectedSpec: spec || selectedSpec,
           selectedSkill,
           selectedLevels,
@@ -85,6 +86,7 @@ export function useFilters(filters: Filters) {
     selectedLevels,
     selectedRating,
     limit,
+    collection,
   ]);
 
   return { questions, specializations, skills };

@@ -16,24 +16,29 @@ export function useDetailCollection(setTitle: (title: string) => void) {
   );
 
   const specializationSlug = collection?.specializations?.[0]?.slug || "";
-  const specializationTitle = collection?.specializations?.[0]?.title || "";
+
+  const collectionId = collection?.id ? String(collection.id) : "";
+
+  const collectionTitle = collection?.title || "";
+
   const totalQuestions = collection?.questionsCount ?? 10;
 
   const { questions } = useFilters({
     pageNumber: 1,
-    spec: specializationSlug,
+    collection: collectionId,
     limit: totalQuestions,
-    selectedSpec: specializationSlug,
+    spec: null,
+    selectedSpec: null,
     selectedSkill: null,
     selectedLevels: null,
     selectedRating: null,
   });
 
   useEffect(() => {
-    if (specializationTitle) {
-      setTitle(specializationTitle);
+    if (collectionTitle) {
+      setTitle(collectionTitle);
     }
-  }, [specializationTitle, setTitle]);
+  }, [collectionTitle, setTitle]);
 
   const handleClose = () => navigate(-1);
 
