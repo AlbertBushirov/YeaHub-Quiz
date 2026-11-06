@@ -22,7 +22,6 @@ export function DetailQuizPage() {
     handleAnswerUnknown,
     currentAnswer,
   } = useDetailQuizPage();
-  console.log(questions);
   const navigate = useNavigate();
   if (isQuizQuestionsLoading) return <main>Загрузка...</main>;
   if (!currentQuestion) return <main>Вопрос не найден</main>;

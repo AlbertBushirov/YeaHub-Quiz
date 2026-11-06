@@ -24,6 +24,7 @@ export function CollectionQuestionsContent({
       </div>
     );
   }
+  console.log(questions);
 
   if (questions && questions.data) {
     return <QuestionsList spec={specializationSlug} questions={questions} />;
