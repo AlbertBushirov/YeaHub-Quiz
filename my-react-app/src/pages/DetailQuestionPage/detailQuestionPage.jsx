@@ -4,17 +4,13 @@ import { useState, useEffect } from "react";
 import { QuestionNavigation } from "../../components/QuestionNavigation/QuestionNavigation";
 import { BackButton } from "../../components/BackButton/BackButton";
 import { AsideDetail } from "../../components/AsideDetail/AsideDetail";
-import {
-  getPublicQuestions,
-  getPublicQuestionById,
-} from "../../api/questionsApi";
+import { ListButtons } from "../../components/ListButtons/listButtons";
 
 import { useQuestionNavigation } from "../../hooks/useQuestionNavigation";
 
 import "./detailQuestionPage.scss";
 
 export function DetailQuestionPage() {
-  // Возвращаем чтение title (куда попадает slug из URL)
   const { title: slug } = useParams();
   const navigate = useNavigate();
 

@@ -7,7 +7,7 @@ import "./DetailQuizPage.scss";
 export function DetailQuizPage() {
   const {
     currentQuestion,
-    isQuizQuestionsLoading, // В хуке мы объединили isLoading и isFetching
+    isQuizQuestionsLoading,
     isQuizQuestionsError,
     handlePrevQuestion,
     handleNextQuestion,

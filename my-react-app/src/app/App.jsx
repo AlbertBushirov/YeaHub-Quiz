@@ -84,7 +84,6 @@ function App() {
             element={<DetailCollectionPage title={title} setTitle={setTitle} />}
           />
         </Route>
-
         <Route path="quiz" element={<QuizPage />}></Route>
         <Route path="quiz/questions" element={<DetailQuizPage />} />
         <Route path="quiz/statistic" element={<QuizStatisticPage />} />
